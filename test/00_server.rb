@@ -1,4 +1,5 @@
 require 'active_support/core_ext'
+require 'active_support/inflector'
 require 'webrick'
 require_relative '../lib/rails_lite'
 
@@ -8,18 +9,20 @@ require_relative '../lib/rails_lite'
 # http://www.ruby-doc.org/stdlib-2.0/libdoc/webrick/rdoc/WEBrick/Cookie.html
 server = WEBrick::HTTPServer.new :Port => 8080
 trap('INT') { server.shutdown }
-
 class MyController < ControllerBase
+  
+  
   def go
-    render_content("hello world!", "text/html")
+    #render_content("hello world!", "text/html")
+    #redirect_to "https://www.google.com"
 
     # after you have template rendering, uncomment:
-#    render :show
+    #render :show
 
     # after you have sessions going, uncomment:
-#    session["count"] ||= 0
-#    session["count"] += 1
-#    render :counting_show
+    session["count"] ||= 0
+    session["count"] += 1
+    render :counting_show
   end
 end
 
