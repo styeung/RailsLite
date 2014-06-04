@@ -7,7 +7,7 @@ describe Session do
 
   it "deserializes json cookie if one exists" do
     req.cookies << cook
-    #p cook
+    p cook
     session = Session.new(req)
     session['xyz'].should == 'abc'
   end
@@ -17,7 +17,7 @@ describe Session do
       before(:each) do
         session = Session.new(req)
         session['first_key'] = 'first_val'
-        p session.store_session(res)
+        session.store_session(res)
       end
 
       it "adds new cookie with '_rails_lite_app' name to response" do
