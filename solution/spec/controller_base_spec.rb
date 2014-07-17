@@ -59,7 +59,7 @@ describe ControllerBase do
       users_controller.res.status.should == 302
     end
 
-    describe "#already_rendered?" do
+    describe "#already_built_response?" do
       let(:users_controller2) { UsersController.new(req, res) }
       it "is false before rendering" do
         users_controller2.already_built_response?.should be_false
@@ -90,7 +90,7 @@ describe ControllerBase do
       users_controller.res.content_type.should == "text/html"
     end
 
-    describe "#already_rendered?" do
+    describe "#already_built_response?" do
       let(:users_controller2) { UsersController.new(req, res) }
       it "is false before rendering" do
         users_controller2.already_built_response?.should be_false

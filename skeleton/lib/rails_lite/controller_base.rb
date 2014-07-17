@@ -3,7 +3,6 @@ require 'active_support/inflector'
 require_relative 'params'
 require_relative 'session'
 
-
 class ControllerBase
   attr_reader :params, :req, :res
 
@@ -11,14 +10,12 @@ class ControllerBase
   def initialize(req, res, route_params = {})
   end
 
-  # populate the response with content
-  # set the responses content type to the given type
-  # later raise an error if the developer tries to double render
-  def render_content(content, type)
-  end
-
   # helper method to alias @already_built_response
   def already_built_response?
+  end
+
+  # use this with the router to call action_name (:index, :show, :create...)
+  def invoke_action(name)
   end
 
   # set the response status code and header
@@ -30,11 +27,13 @@ class ControllerBase
   def render(template_name)
   end
 
-  # method exposing a `Session` object
-  def session
+  # populate the response with content
+  # set the responses content type to the given type
+  # later raise an error if the developer tries to double render
+  def render_content(content, type)
   end
 
-  # use this with the router to call action_name (:index, :show, :create...)
-  def invoke_action(name)
+  # method exposing a `Session` object
+  def session
   end
 end
