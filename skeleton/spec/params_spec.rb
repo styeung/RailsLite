@@ -73,9 +73,9 @@ describe Params do
         req.query_string = "key=val&key2=val2&key3=val3"
         params = Params.new(req)
         params.permit("key", "key2")
-        params.permitted?("key").should be_true
-        params.permitted?("key2").should be_true
-        params.permitted?("key3").should be_false
+        params.permitted?("key").should be true
+        params.permitted?("key2").should be true
+        params.permitted?("key3").should be false
       end
 
       it "collects up permitted keys across multiple calls" do
@@ -83,9 +83,9 @@ describe Params do
         params = Params.new(req)
         params.permit("key")
         params.permit("key2")
-        params.permitted?("key").should be_true
-        params.permitted?("key2").should be_true
-        params.permitted?("key3").should be_false
+        params.permitted?("key").should be true
+        params.permitted?("key2").should be true
+        params.permitted?("key3").should be false
       end
     end
 
