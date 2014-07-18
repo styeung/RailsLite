@@ -7,8 +7,6 @@ require_relative '../lib/rails_lite'
 # http://www.ruby-doc.org/stdlib-2.0/libdoc/webrick/rdoc/WEBrick/HTTPRequest.html
 # http://www.ruby-doc.org/stdlib-2.0/libdoc/webrick/rdoc/WEBrick/HTTPResponse.html
 # http://www.ruby-doc.org/stdlib-2.0/libdoc/webrick/rdoc/WEBrick/Cookie.html
-server = WEBrick::HTTPServer.new(:Port => 3000)
-trap('INT') { server.shutdown }
 
 class StatusController < ControllerBase
   def index
@@ -39,8 +37,10 @@ router.draw do
   # get Regexp.new("^/statuses/(?<id>\\d+)$"), StatusController, :show
 end
 
+server = WEBrick::HTTPServer.new(Port: 3000)
 server.mount_proc '/' do |req, res|
   route = router.run(req, res)
 end
 
+trap('INT') { server.shutdown }
 server.start
