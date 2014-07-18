@@ -1,14 +1,12 @@
-require 'active_support/core_ext'
 require 'webrick'
-require_relative '../lib/rails_lite'
+require_relative '../lib/phase3/controller_base'
 
 # http://www.ruby-doc.org/stdlib-2.0/libdoc/webrick/rdoc/WEBrick.html
 # http://www.ruby-doc.org/stdlib-2.0/libdoc/webrick/rdoc/WEBrick/HTTPRequest.html
 # http://www.ruby-doc.org/stdlib-2.0/libdoc/webrick/rdoc/WEBrick/HTTPResponse.html
 # http://www.ruby-doc.org/stdlib-2.0/libdoc/webrick/rdoc/WEBrick/Cookie.html
 
-
-class MyController < ControllerBase
+class MyController < Phase3::ControllerBase
   def go
     render :show
   end

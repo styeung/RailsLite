@@ -1,14 +1,12 @@
-require 'active_support/core_ext'
 require 'webrick'
-require_relative '../lib/rails_lite'
+require_relative '../lib/phase4/controller_base'
 
 # http://www.ruby-doc.org/stdlib-2.0/libdoc/webrick/rdoc/WEBrick.html
 # http://www.ruby-doc.org/stdlib-2.0/libdoc/webrick/rdoc/WEBrick/HTTPRequest.html
 # http://www.ruby-doc.org/stdlib-2.0/libdoc/webrick/rdoc/WEBrick/HTTPResponse.html
 # http://www.ruby-doc.org/stdlib-2.0/libdoc/webrick/rdoc/WEBrick/Cookie.html
 
-
-class MyController < ControllerBase
+class MyController < Phase4::ControllerBase
   def go
     session["count"] ||= 0
     session["count"] += 1

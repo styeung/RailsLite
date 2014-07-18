@@ -1,13 +1,11 @@
-# Using the specs
+# Using The Specs
 
-Some specs have been written to guide you towards the lite :) There are rspec
-specs in the `spec` directory and ruby code for you to test with in the `test`
-directory.
-
-The specs were written with _you_ in mind ;) Run them in this order they should
-generally follow the progression of the project.
+Some specs have been written to guide you towards the lite. There are
+rspec specs in the `spec` directory and demo servers for you to try
+in the `bin` directory.
 
 ## Suggested Order
+
 0.  `bundle exec rspec spec/controller_base_spec.rb`
 0.  `bundle exec rspec spec/session_spec.rb`
 0.  `bundle exec rspec spec/params_spec.rb`

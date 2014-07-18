@@ -1,44 +1,48 @@
-require 'active_support/core_ext'
-require 'json'
 require 'webrick'
-require_relative '../lib/rails_lite'
+require_relative '../lib/phase6/controller_base'
+require_relative '../lib/phase6/router'
+
 
 # http://www.ruby-doc.org/stdlib-2.0/libdoc/webrick/rdoc/WEBrick.html
 # http://www.ruby-doc.org/stdlib-2.0/libdoc/webrick/rdoc/WEBrick/HTTPRequest.html
 # http://www.ruby-doc.org/stdlib-2.0/libdoc/webrick/rdoc/WEBrick/HTTPResponse.html
 # http://www.ruby-doc.org/stdlib-2.0/libdoc/webrick/rdoc/WEBrick/Cookie.html
 
-class StatusController < ControllerBase
+$cats = [
+  { id: 1, name: "Curie" },
+  { id: 2, name: "Markov" }
+]
+
+$statuses = [
+  { id: 1, cat_id: 1, text: "Curie loves string!" },
+  { id: 2, cat_id: 2, text: "Markov is mighty!" },
+  { id: 3, cat_id: 1, text: "Curie is cool!" }
+]
+
+class StatusesController < Phase6::ControllerBase
   def index
-    statuses = ["s1", "s2", "s3"]
+    statuses = $statuses.select do |s|
+      s[:cat_id] == Integer(params[:cat_id])
+    end
 
-    render_content(statuses.to_json, "text/json")
-  end
-
-  def show
-    render_content("status ##{params[:id]}", "text/text")
+    render_content(statuses.to_s, "text/text")
   end
 end
 
-class UserController < ControllerBase
+class Cats2Controller < Phase6::ControllerBase
   def index
-    users = ["u1", "u2", "u3"]
-
-    render_content(users.to_json, "text/json")
+    render_content($cats.to_s, "text/text")
   end
 end
 
-router = Router.new
+router = Phase6::Router.new
 router.draw do
-  get Regexp.new("^/statuses$"), StatusController, :index
-  get Regexp.new("^/users$"), UserController, :index
-
-  # uncomment this when you get to route params
-  # get Regexp.new("^/statuses/(?<id>\\d+)$"), StatusController, :show
+  get Regexp.new("^/cats$"), Cats2Controller, :index
+  get Regexp.new("^/cats/(?<cat_id>\\d+)/statuses$"), StatusesController, :index
 end
 
 server = WEBrick::HTTPServer.new(Port: 3000)
-server.mount_proc '/' do |req, res|
+server.mount_proc('/') do |req, res|
   route = router.run(req, res)
 end
 
