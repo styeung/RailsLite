@@ -1,28 +1,28 @@
 require 'webrick'
-require 'rails_lite'
+require 'phase6/router'
+require 'phase6/controller_base'
 
-describe Route do
+describe Phase6::Route do
   let(:req) { WEBrick::HTTPRequest.new(:Logger => nil) }
   let(:res) { WEBrick::HTTPResponse.new(:HTTPVersion => '1.0') }
 
-
   describe "#matches?" do
     it "matches simple regular expression" do
-      index_route = Route.new(Regexp.new("^/users$"), :get, "x", :x)
+      index_route = Phase6::Route.new(Regexp.new("^/users$"), :get, "x", :x)
       req.stub(:path) { "/users" }
       req.stub(:request_method) { :get }
       index_route.matches?(req).should be true
     end
 
     it "matches regular expression with capture" do
-      index_route = Route.new(Regexp.new("^/users/(?<id>\\d+)$"), :get, "x", :x)
+      index_route = Phase6::Route.new(Regexp.new("^/users/(?<id>\\d+)$"), :get, "x", :x)
       req.stub(:path) { "/users/1" }
       req.stub(:request_method) { :get }
       index_route.matches?(req).should be true
     end
 
     it "correctly doesn't matche regular expression with capture" do
-      index_route = Route.new(Regexp.new("^/users/(?<id>\\d+)$"), :get, "UsersController", :index)
+      index_route = Phase6::Route.new(Regexp.new("^/users/(?<id>\\d+)$"), :get, "UsersController", :index)
       req.stub(:path) { "/statuses/1" }
       req.stub(:request_method) { :get }
       index_route.matches?(req).should be false
@@ -41,13 +41,13 @@ describe Route do
       dummy_controller_instance.stub(:invoke_action)
       dummy_controller_class.stub(:new).with(req, res, {}) { dummy_controller_instance }
       dummy_controller_instance.should_receive(:invoke_action)
-      index_route = Route.new(Regexp.new("^/users$"), :get, dummy_controller_class, :index)
+      index_route = Phase6::Route.new(Regexp.new("^/users$"), :get, dummy_controller_class, :index)
       index_route.run(req, res)
     end
   end
 end
 
-describe Router do
+describe Phase6::Router do
   let(:req) { WEBrick::HTTPRequest.new(:Logger => nil) }
   let(:res) { WEBrick::HTTPResponse.new(:HTTPVersion => '1.0') }
 
@@ -91,7 +91,7 @@ describe Router do
 
   describe "http method (get, put, post, delete)" do
     it "adds methods get, put, post and delete" do
-      router = Router.new
+      router = Phase6::Router.new
       (router.methods - Class.new.methods).should include(:get)
       (router.methods - Class.new.methods).should include(:put)
       (router.methods - Class.new.methods).should include(:post)
@@ -99,8 +99,8 @@ describe Router do
     end
 
     it "adds a route when an http method method is called" do
-      router = Router.new
-      router.get Regexp.new("^/users$"), ControllerBase, :index
+      router = Phase6::Router.new
+      router.get Regexp.new("^/users$"), Phase6::ControllerBase, :index
       router.routes.count.should == 1
     end
   end

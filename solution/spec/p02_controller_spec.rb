@@ -1,9 +1,9 @@
 require 'webrick'
-require 'rails_lite'
+require 'phase2/controller_base'
 
-describe ControllerBase do
+describe Phase2::ControllerBase do
   before(:all) do
-    class UsersController < ControllerBase
+    class UsersController < Phase2::ControllerBase
       def index
       end
     end
@@ -28,6 +28,7 @@ describe ControllerBase do
 
     describe "#already_built_response?" do
       let(:users_controller2) { UsersController.new(req, res) }
+
       it "is false before rendering" do
         users_controller2.already_built_response?.should be false
       end
@@ -39,9 +40,9 @@ describe ControllerBase do
 
       it "raises an error when attempting to render twice" do
         users_controller2.render_content "sombody", "text/html"
-        expect {
-        users_controller2.render_content "sombody", "text/html"
-        }.to raise_error
+        expect do
+          users_controller2.render_content "sombody", "text/html"
+        end.to raise_error
       end
     end
   end
@@ -61,6 +62,7 @@ describe ControllerBase do
 
     describe "#already_built_response?" do
       let(:users_controller2) { UsersController.new(req, res) }
+
       it "is false before rendering" do
         users_controller2.already_built_response?.should be false
       end
@@ -74,37 +76,6 @@ describe ControllerBase do
         users_controller2.redirect_to("http://google.com")
         expect do
           users_controller2.redirect_to("http://google.com")
-        end.to raise_error
-      end
-    end
-  end
-
-  describe "#render" do
-    before(:each) do
-      users_controller.render(:index)
-    end
-
-    it "renders the html of the index view" do
-      users_controller.res.body.should include("users")
-      users_controller.res.body.should include("<h1>")
-      users_controller.res.content_type.should == "text/html"
-    end
-
-    describe "#already_built_response?" do
-      let(:users_controller2) { UsersController.new(req, res) }
-      it "is false before rendering" do
-        users_controller2.already_built_response?.should be false
-      end
-
-      it "is true after rendering content" do
-        users_controller2.render(:index)
-        users_controller2.already_built_response?.should be true
-      end
-
-      it "raises an error when attempting to render twice" do
-        users_controller2.render(:index)
-        expect do
-          users_controller2.render(:index)
         end.to raise_error
       end
     end

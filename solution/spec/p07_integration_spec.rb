@@ -1,12 +1,13 @@
 require 'webrick'
-require 'rails_lite'
+require 'phase6/controller_base'
+require 'phase6/router'
 
 describe "the symphony of things" do
   let(:req) { WEBrick::HTTPRequest.new(:Logger => nil) }
   let(:res) { WEBrick::HTTPResponse.new(:HTTPVersion => '1.0') }
 
   before(:all) do
-    class Ctrlr < ControllerBase
+    class Ctrlr < Phase6::ControllerBase
       def route_render
         render_content("testing", "text/html")
       end
@@ -24,7 +25,7 @@ describe "the symphony of things" do
 
   describe "routes and params" do
     it "route instantiates controller and calls invoke action" do
-      route = Route.new(Regexp.new("^/statuses/(?<id>\\d+)$"), :get, Ctrlr, :route_render)
+      route = Phase6::Route.new(Regexp.new("^/statuses/(?<id>\\d+)$"), :get, Ctrlr, :route_render)
       req.stub(:path) { "/statuses/1" }
       req.stub(:request_method) { :get }
       route.run(req, res)
@@ -32,7 +33,7 @@ describe "the symphony of things" do
     end
 
     it "route adds to params" do
-      route = Route.new(Regexp.new("^/statuses/(?<id>\\d+)$"), :get, Ctrlr, :route_does_params)
+      route = Phase6::Route.new(Regexp.new("^/statuses/(?<id>\\d+)$"), :get, Ctrlr, :route_does_params)
       req.stub(:path) { "/statuses/1" }
       req.stub(:request_method) { :get }
       route.run(req, res)
@@ -44,7 +45,7 @@ describe "the symphony of things" do
     let(:ctrlr) { Ctrlr.new(req, res) }
 
     it "exposes a session via the session method" do
-      ctrlr.session.should be_instance_of(Session)
+      ctrlr.session.should be_instance_of(Phase4::Session)
     end
 
     it "saves the session after rendering content" do

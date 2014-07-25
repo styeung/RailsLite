@@ -1,21 +1,21 @@
-require 'rails_lite'
+require 'webrick'
+require 'phase4/session'
 
-describe Session do
+describe Phase4::Session do
   let(:req) { WEBrick::HTTPRequest.new(:Logger => nil) }
   let(:res) { WEBrick::HTTPResponse.new(:HTTPVersion => '1.0') }
   let(:cook) { WEBrick::Cookie.new('_rails_lite_app', { :xyz=> 'abc' }.to_json) }
 
   it "deserializes json cookie if one exists" do
     req.cookies << cook
-    p cook
-    session = Session.new(req)
+    session = Phase4::Session.new(req)
     session['xyz'].should == 'abc'
   end
 
   describe "#store_session" do
     context "without cookies in request" do
       before(:each) do
-        session = Session.new(req)
+        session = Phase4::Session.new(req)
         session['first_key'] = 'first_val'
         session.store_session(res)
       end
@@ -38,12 +38,12 @@ describe Session do
       end
 
       it "reads the pre-existing cookie data into hash" do
-        session = Session.new(req)
+        session = Phase4::Session.new(req)
         session['pho'].should == 'soup'
       end
 
       it "saves new and old data to the cookie" do
-        session = Session.new(req)
+        session = Phase4::Session.new(req)
         session['machine'] = 'mocha'
         session.store_session(res)
         cookie = res.cookies.find { |c| c.name == '_rails_lite_app' }
