@@ -16,25 +16,10 @@ module Phase5
       if req.query_string
         @params.merge!(parse_www_encoded_form(req.query_string))
       end
-
-      @permitted = []
     end
 
     def [](key)
       @params[key.to_s]
-    end
-
-    def permit(*keys)
-      @permitted.push *keys
-    end
-
-    def require(key)
-      raise AttributeNotFoundError unless @params.has_key?(key)
-      @params[key]
-    end
-
-    def permitted?(key)
-      @permitted.include?(key)
     end
 
     def to_s
