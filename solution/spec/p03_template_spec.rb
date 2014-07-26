@@ -10,8 +10,8 @@ describe Phase3::ControllerBase do
     end
   end
 
-  let(:req) { WEBrick::HTTPRequest.new(:Logger => nil) }
-  let(:res) { WEBrick::HTTPResponse.new(:HTTPVersion => '1.0') }
+  let(:req) { WEBrick::HTTPRequest.new(Logger: nil) }
+  let(:res) { WEBrick::HTTPResponse.new(HTTPVersion: '1.0') }
   let(:cats_controller) { CatsController.new(req, res) }
 
   describe "#render" do

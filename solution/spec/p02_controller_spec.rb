@@ -9,8 +9,8 @@ describe Phase2::ControllerBase do
     end
   end
 
-  let(:req) { WEBrick::HTTPRequest.new(:Logger => nil) }
-  let(:res) { WEBrick::HTTPResponse.new(:HTTPVersion => '1.0') }
+  let(:req) { WEBrick::HTTPRequest.new(Logger: nil) }
+  let(:res) { WEBrick::HTTPResponse.new(HTTPVersion: '1.0') }
   let(:users_controller) { UsersController.new(req, res) }
 
   describe "#render_content" do

@@ -3,8 +3,8 @@ require 'phase6/router'
 require 'phase6/controller_base'
 
 describe Phase6::Route do
-  let(:req) { WEBrick::HTTPRequest.new(:Logger => nil) }
-  let(:res) { WEBrick::HTTPResponse.new(:HTTPVersion => '1.0') }
+  let(:req) { WEBrick::HTTPRequest.new(Logger: nil) }
+  let(:res) { WEBrick::HTTPResponse.new(HTTPVersion: '1.0') }
 
   describe "#matches?" do
     it "matches simple regular expression" do
@@ -48,8 +48,8 @@ describe Phase6::Route do
 end
 
 describe Phase6::Router do
-  let(:req) { WEBrick::HTTPRequest.new(:Logger => nil) }
-  let(:res) { WEBrick::HTTPResponse.new(:HTTPVersion => '1.0') }
+  let(:req) { WEBrick::HTTPRequest.new(Logger: nil) }
+  let(:res) { WEBrick::HTTPResponse.new(HTTPVersion: '1.0') }
 
   describe "#add_route" do
     it "adds a route" do

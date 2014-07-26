@@ -3,8 +3,8 @@ require 'phase6/controller_base'
 require 'phase6/router'
 
 describe "the symphony of things" do
-  let(:req) { WEBrick::HTTPRequest.new(:Logger => nil) }
-  let(:res) { WEBrick::HTTPResponse.new(:HTTPVersion => '1.0') }
+  let(:req) { WEBrick::HTTPRequest.new(Logger: nil) }
+  let(:res) { WEBrick::HTTPResponse.new(HTTPVersion: '1.0') }
 
   before(:all) do
     class Ctrlr < Phase6::ControllerBase

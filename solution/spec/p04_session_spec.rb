@@ -2,9 +2,9 @@ require 'webrick'
 require 'phase4/session'
 
 describe Phase4::Session do
-  let(:req) { WEBrick::HTTPRequest.new(:Logger => nil) }
-  let(:res) { WEBrick::HTTPResponse.new(:HTTPVersion => '1.0') }
-  let(:cook) { WEBrick::Cookie.new('_rails_lite_app', { :xyz=> 'abc' }.to_json) }
+  let(:req) { WEBrick::HTTPRequest.new(Logger: nil) }
+  let(:res) { WEBrick::HTTPResponse.new(HTTPVersion: '1.0') }
+  let(:cook) { WEBrick::Cookie.new('_rails_lite_app', { xyz: 'abc' }.to_json) }
 
   it "deserializes json cookie if one exists" do
     req.cookies << cook
