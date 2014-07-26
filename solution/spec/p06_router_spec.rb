@@ -30,12 +30,15 @@ describe Phase6::Route do
   end
 
   describe "#run" do
+    before(:all) { class DummyController; end }
+    after(:all) { Object.send(:remove_const, "DummyController") }
+
     it "instantiates controller and invokes action" do
       # reader beware. hairy adventures ahead.
       # this is really checking way too much implementation,
       # but tests the aproach recommended in the project
       req.stub(:path) { "/users" }
-      class DummyController; end
+
       dummy_controller_class = DummyController
       dummy_controller_instance = DummyController.new
       dummy_controller_instance.stub(:invoke_action)

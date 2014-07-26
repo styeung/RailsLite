@@ -4,12 +4,13 @@ require 'phase5/controller_base'
 
 describe Phase5::Params do
   before(:all) do
-    class Phase5::CatsController < Phase5::ControllerBase
+    class CatsController < Phase5::ControllerBase
       def index
         @cats = ["Gizmo"]
       end
     end
   end
+  after(:all) { Object.send(:remove_const, "CatsController") }
 
   let(:req) { WEBrick::HTTPRequest.new(Logger: nil) }
   let(:res) { WEBrick::HTTPResponse.new(HTTPVersion: '1.0') }

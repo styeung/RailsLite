@@ -22,6 +22,7 @@ describe "the symphony of things" do
       end
     end
   end
+  after(:all) { Object.send(:remove_const, "Ctrlr") }
 
   describe "routes and params" do
     it "route instantiates controller and calls invoke action" do
