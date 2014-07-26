@@ -4,7 +4,7 @@ require 'phase5/controller_base'
 
 describe Phase5::Params do
   before(:all) do
-    class CatsController < Phase5::ControllerBase
+    class Phase5::CatsController < Phase5::ControllerBase
       def index
         @cats = ["Gizmo"]
       end

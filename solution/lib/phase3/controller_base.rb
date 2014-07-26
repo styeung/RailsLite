@@ -8,7 +8,7 @@ module Phase3
     # pass the rendered html to render_content
     def render(template_name)
       template_fname = File.join(
-        "views", self.class.name.underscore, "#{template_name}.html.erb"
+        "views", self.class.name.demodulize.underscore, "#{template_name}.html.erb"
       )
 
       template_code = File.read(template_fname)

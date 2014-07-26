@@ -3,7 +3,7 @@ require 'phase2/controller_base'
 
 describe Phase2::ControllerBase do
   before(:all) do
-    class UsersController < Phase2::ControllerBase
+    class Phase2::UsersController < Phase2::ControllerBase
       def index
       end
     end
@@ -11,7 +11,7 @@ describe Phase2::ControllerBase do
 
   let(:req) { WEBrick::HTTPRequest.new(Logger: nil) }
   let(:res) { WEBrick::HTTPResponse.new(HTTPVersion: '1.0') }
-  let(:users_controller) { UsersController.new(req, res) }
+  let(:users_controller) { Phase2::UsersController.new(req, res) }
 
   describe "#render_content" do
     before(:each) do
@@ -27,7 +27,7 @@ describe Phase2::ControllerBase do
     end
 
     describe "#already_built_response?" do
-      let(:users_controller2) { UsersController.new(req, res) }
+      let(:users_controller2) { Phase2::UsersController.new(req, res) }
 
       it "is false before rendering" do
         users_controller2.already_built_response?.should be false
@@ -61,7 +61,7 @@ describe Phase2::ControllerBase do
     end
 
     describe "#already_built_response?" do
-      let(:users_controller2) { UsersController.new(req, res) }
+      let(:users_controller2) { Phase2::UsersController.new(req, res) }
 
       it "is false before rendering" do
         users_controller2.already_built_response?.should be false

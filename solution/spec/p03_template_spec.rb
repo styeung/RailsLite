@@ -3,7 +3,7 @@ require 'phase3/controller_base'
 
 describe Phase3::ControllerBase do
   before(:all) do
-    class CatsController < Phase3::ControllerBase
+    class Phase3::CatsController < Phase3::ControllerBase
       def index
         @cats = ["GIZMO"]
       end
@@ -12,7 +12,7 @@ describe Phase3::ControllerBase do
 
   let(:req) { WEBrick::HTTPRequest.new(Logger: nil) }
   let(:res) { WEBrick::HTTPResponse.new(HTTPVersion: '1.0') }
-  let(:cats_controller) { CatsController.new(req, res) }
+  let(:cats_controller) { Phase3::CatsController.new(req, res) }
 
   describe "#render" do
     before(:each) do
@@ -26,7 +26,7 @@ describe Phase3::ControllerBase do
     end
 
     describe "#already_built_response?" do
-      let(:cats_controller2) { CatsController.new(req, res) }
+      let(:cats_controller2) { Phase3::CatsController.new(req, res) }
 
       it "is false before rendering" do
         cats_controller2.already_built_response?.should be false
