@@ -1,5 +1,6 @@
 require 'webrick'
 require 'phase4/session'
+require 'phase4/controller_base'
 
 describe Phase4::Session do
   let(:req) { WEBrick::HTTPRequest.new(Logger: nil) }
@@ -52,5 +53,50 @@ describe Phase4::Session do
         h['machine'].should == 'mocha'
       end
     end
+  end
+end
+
+describe Phase4::ControllerBase do
+  before(:all) do
+    class CatsController < Phase4::ControllerBase
+    end
+  end
+  after(:all) { Object.send(:remove_const, "CatsController") }
+
+  let(:req) { WEBrick::HTTPRequest.new(Logger: nil) }
+  let(:res) { WEBrick::HTTPResponse.new(HTTPVersion: '1.0') }
+  let(:cats_controller) { CatsController.new(req, res) }
+
+  describe "#session" do
+    it "returns a session instance" do
+      expect(cats_controller.session).to be_a(Phase4::Session)
+    end
+
+    it "returns the same instance on successive invocations" do
+      first_result = cats_controller.session
+      expect(cats_controller.session).to be(first_result)
+    end
+  end
+
+  shared_examples_for "storing session data" do
+    it "should store the session data" do
+      cats_controller.session['test_key'] = 'test_value'
+      cats_controller.send(method, *args)
+      cookie = res.cookies.find { |c| c.name == '_rails_lite_app' }
+      h = JSON.parse(cookie.value)
+      expect(h['test_key']).to eq('test_value')
+    end
+  end
+
+  describe "#render_content" do
+    let(:method) { :render_content }
+    let(:args) { ['test', 'text/plain'] }
+    include_examples "storing session data"
+  end
+
+  describe "#redirect_to" do
+    let(:method) { :redirect_to }
+    let(:args) { ['http://appacademy.io'] }
+    include_examples "storing session data"
   end
 end
