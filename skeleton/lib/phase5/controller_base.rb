@@ -7,6 +7,8 @@ module Phase5
 
     # setup the controller
     def initialize(req, res, route_params = {})
+      query_string = req.query_string
+      @params = Params.new(req, route_params)
     end
   end
 end
