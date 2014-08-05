@@ -7,13 +7,19 @@ module Phase5
     # 2. post body
     # 3. route params
     def initialize(req, route_params = {})
-      if req.query_string.nil?
+      if req.query_string.nil? && req.body.nil? && route_params.empty?
         @params = {}
       else
+        @params = {}
         query_string = req.query_string
         request_body = req.body
-        @params = route_params
         self.parse_www_encoded_form(query_string, request_body)
+
+        unless route_params.empty?
+          route_params.each do |key, value|
+            @params[key] = value
+          end
+        end
       end
     end
 
@@ -47,18 +53,22 @@ module Phase5
           decoded_query.each do |inner_array|
             @params[inner_array[0]] = inner_array[1]
           end
+        end
       end
 
       unless request_body.blank?
         if request_body[/[\[\]]/]
-          decoded_body = parse_key(decoded_body)
+          decoded_body = parse_key(request_body)
           @params.merge!(self.transform_array(decoded_body))
         else
           decoded_body = URI::decode_www_form(request_body)
           decoded_body.each do |inner_array|
             @params[inner_array[0]] = inner_array[1]
           end
+        end
       end
+
+      @params
 
       # unless query_string.blank?
 #         decoded_query = URI::decode_www_form(query_string)
